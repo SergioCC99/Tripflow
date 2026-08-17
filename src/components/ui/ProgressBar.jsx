@@ -1,9 +1,4 @@
-interface ProgressBarProps {
-  value: number;
-  max: number;
-}
-
-export function ProgressBar({ value, max }: ProgressBarProps) {
+export function ProgressBar({ value, max }) {
   const percent = max > 0 ? Math.min(100, Math.max(0, (value / max) * 100)) : 0;
 
   return (

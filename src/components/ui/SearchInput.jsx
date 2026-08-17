@@ -1,9 +1,6 @@
-import type { InputHTMLAttributes } from 'react';
 import searchIcon from '../../assets/icons/search.svg';
 
-type SearchInputProps = InputHTMLAttributes<HTMLInputElement>;
-
-export function SearchInput(props: SearchInputProps) {
+export function SearchInput(props) {
   return (
     <label className="flex w-full items-center gap-1 rounded-xl bg-surface-muted p-3">
       <img src={searchIcon} alt="" className="size-[22px] shrink-0" />

@@ -1,15 +1,10 @@
 import { Link } from 'react-router-dom';
-import type { Trip } from '../../features/trips/types';
 import { countTripDays, formatCurrencyCOP, formatShortDate } from '../../lib/format';
 import { ProgressBar } from '../ui/ProgressBar';
 import dividerIcon from '../../assets/icons/divider.svg';
 import dotIcon from '../../assets/icons/dot.svg';
 
-interface TripCardProps {
-  trip: Trip;
-}
-
-export function TripCard({ trip }: TripCardProps) {
+export function TripCard({ trip }) {
   const days = countTripDays(trip.startDate, trip.endDate);
 
   return (

@@ -4,9 +4,8 @@ import lisboa from '../../assets/images/Lisboa.jpg';
 import bogota from '../../assets/images/Bogota.jpeg';
 import medellin from '../../assets/images/Medellin.jpg';
 import rio from '../../assets/images/Rio.jpg';
-import type { Trip } from './types';
 
-export const seedTrips: Trip[] = [
+export const seedTrips = [
   {
     id: 'japon',
     destination: 'Japón',

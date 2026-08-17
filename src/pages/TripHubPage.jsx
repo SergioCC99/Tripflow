@@ -4,18 +4,17 @@ import { AppHeader } from '../components/trips/AppHeader';
 import { TripGrid } from '../components/trips/TripGrid';
 import { Button } from '../components/ui/Button';
 import { SearchInput } from '../components/ui/SearchInput';
-import { TabGroup, type TabOption } from '../components/ui/TabGroup';
+import { TabGroup } from '../components/ui/TabGroup';
 import { useTrips } from '../features/trips/useTrips';
-import type { TripStatus } from '../features/trips/types';
 import plusIcon from '../assets/icons/plus.svg';
 
-const TAB_OPTIONS: TabOption<TripStatus>[] = [
+const TAB_OPTIONS = [
   { label: 'En curso', value: 'ongoing' },
   { label: 'Próximos', value: 'upcoming' },
   { label: 'Finalizados', value: 'completed' },
 ];
 
-const EMPTY_MESSAGES: Record<TripStatus, string> = {
+const EMPTY_MESSAGES = {
   ongoing: 'No tienes viajes en curso.',
   upcoming: 'No tienes próximos viajes.',
   completed: 'Aún no tienes viajes finalizados.',
@@ -23,7 +22,7 @@ const EMPTY_MESSAGES: Record<TripStatus, string> = {
 
 export function TripHubPage() {
   const { tripsByStatus } = useTrips();
-  const [activeTab, setActiveTab] = useState<TripStatus>('ongoing');
+  const [activeTab, setActiveTab] = useState('ongoing');
   const [search, setSearch] = useState('');
   const navigate = useNavigate();
 

@@ -1,17 +1,6 @@
 import clsx from 'clsx';
 
-export interface TabOption<T extends string> {
-  label: string;
-  value: T;
-}
-
-interface TabGroupProps<T extends string> {
-  options: TabOption<T>[];
-  value: T;
-  onChange: (value: T) => void;
-}
-
-export function TabGroup<T extends string>({ options, value, onChange }: TabGroupProps<T>) {
+export function TabGroup({ options, value, onChange }) {
   return (
     <div className="flex flex-wrap items-center gap-2" role="tablist">
       {options.map((option) => {

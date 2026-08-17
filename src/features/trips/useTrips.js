@@ -1,9 +1,8 @@
 import { useMemo, useState } from 'react';
-import type { Trip, TripStatus } from './types';
 import { loadTrips, saveTrips } from './tripsStorage';
 import { seedTrips } from './seedTrips';
 
-function readInitialTrips(): Trip[] {
+function readInitialTrips() {
   const stored = loadTrips();
   if (stored.length > 0) return stored;
 
@@ -12,9 +11,9 @@ function readInitialTrips(): Trip[] {
 }
 
 export function useTrips() {
-  const [trips, setTrips] = useState<Trip[]>(readInitialTrips);
+  const [trips, setTrips] = useState(readInitialTrips);
 
-  const addTrip = (trip: Trip) => {
+  const addTrip = (trip) => {
     setTrips((prev) => {
       const next = [...prev, trip];
       saveTrips(next);
@@ -23,7 +22,7 @@ export function useTrips() {
   };
 
   const tripsByStatus = useMemo(() => {
-    return (status: TripStatus) => trips.filter((trip) => trip.status === status);
+    return (status) => trips.filter((trip) => trip.status === status);
   }, [trips]);
 
   return { trips, addTrip, tripsByStatus };

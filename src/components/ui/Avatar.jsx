@@ -1,12 +1,6 @@
 import clsx from 'clsx';
 
-interface AvatarProps {
-  name: string;
-  photoUrl?: string;
-  className?: string;
-}
-
-export function Avatar({ name, photoUrl, className }: AvatarProps) {
+export function Avatar({ name, photoUrl, className }) {
   if (photoUrl) {
     return (
       <img

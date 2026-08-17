@@ -1,14 +1,8 @@
-import type { ReactNode } from 'react';
 import { Avatar } from '../ui/Avatar';
 import logoArrow1 from '../../assets/icons/logo-arrow-1.svg';
 import logoArrow2 from '../../assets/icons/logo-arrow-2.svg';
 
-interface AppHeaderProps {
-  userName: string;
-  actions?: ReactNode;
-}
-
-export function AppHeader({ userName, actions }: AppHeaderProps) {
+export function AppHeader({ userName, actions }) {
   return (
     <header className="relative overflow-hidden bg-brand">
       <div

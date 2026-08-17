@@ -1,12 +1,6 @@
-import type { ButtonHTMLAttributes, ReactNode } from 'react';
 import clsx from 'clsx';
 
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  icon?: ReactNode;
-  children: ReactNode;
-}
-
-export function Button({ icon, children, className, ...props }: ButtonProps) {
+export function Button({ icon, children, className, ...props }) {
   return (
     <button
       type="button"

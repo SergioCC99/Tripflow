@@ -1,12 +1,6 @@
-import type { Trip } from '../../features/trips/types';
 import { TripCard } from './TripCard';
 
-interface TripGridProps {
-  trips: Trip[];
-  emptyMessage: string;
-}
-
-export function TripGrid({ trips, emptyMessage }: TripGridProps) {
+export function TripGrid({ trips, emptyMessage }) {
   if (trips.length === 0) {
     return <p className="w-full py-8 text-center text-sm text-muted">{emptyMessage}</p>;
   }
