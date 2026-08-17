@@ -1,6 +1,8 @@
-import { useMemo, useState } from 'react';
+import { createContext, useContext, useMemo, useState } from 'react';
 import { loadTrips, saveTrips } from './tripsStorage';
 import { seedTrips } from './seedTrips';
+
+const TripsContext = createContext(null);
 
 function readInitialTrips() {
   const stored = loadTrips();
@@ -10,7 +12,7 @@ function readInitialTrips() {
   return seedTrips;
 }
 
-export function useTrips() {
+export function TripsProvider({ children }) {
   const [trips, setTrips] = useState(readInitialTrips);
 
   const addTrip = (trip) => {
@@ -25,5 +27,15 @@ export function useTrips() {
     return (status) => trips.filter((trip) => trip.status === status);
   }, [trips]);
 
-  return { trips, addTrip, tripsByStatus };
+  const value = useMemo(() => ({ trips, addTrip, tripsByStatus }), [trips, tripsByStatus]);
+
+  return <TripsContext.Provider value={value}>{children}</TripsContext.Provider>;
+}
+
+export function useTrips() {
+  const context = useContext(TripsContext);
+  if (!context) {
+    throw new Error('useTrips must be used within a TripsProvider');
+  }
+  return context;
 }

@@ -13,6 +13,8 @@
   --color-inverse: #f9f9f9;
   --color-warning: #eb8423;
   --color-danger: #bd3e3e;
+  --color-divider: #dedede;
+  --color-alert-bg: #f7ffe0;
 }
 
 body {

@@ -5,7 +5,7 @@ import { TripGrid } from '../components/trips/TripGrid';
 import { Button } from '../components/ui/Button';
 import { SearchInput } from '../components/ui/SearchInput';
 import { TabGroup } from '../components/ui/TabGroup';
-import { useTrips } from '../features/trips/useTrips';
+import { useTrips } from '../features/trips/TripsProvider';
 import plusIcon from '../assets/icons/plus.svg';
 
 const TAB_OPTIONS = [

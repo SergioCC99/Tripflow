@@ -32,3 +32,13 @@ export function countTripDays(startIso, endIso) {
   const diffMs = parseIsoDate(endIso).getTime() - parseIsoDate(startIso).getTime();
   return Math.round(diffMs / 86_400_000) + 1;
 }
+
+export function formatThousands(value) {
+  const digits = String(value).replace(/\D/g, '');
+  return digits ? currencyFormatter.format(Number(digits)) : '';
+}
+
+export function parseThousands(formatted) {
+  const digits = String(formatted).replace(/\D/g, '');
+  return digits ? Number(digits) : 0;
+}

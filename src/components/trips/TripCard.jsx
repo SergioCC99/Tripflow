@@ -13,8 +13,8 @@ export function TripCard({ trip }) {
       className="flex cursor-pointer flex-col overflow-hidden rounded-2xl border border-ink-secondary"
     >
       <div
-        className="relative flex min-h-[120px] items-end bg-cover bg-center px-4 py-3"
-        style={{ backgroundImage: `url(${trip.imageUrl})` }}
+        className="relative flex min-h-[120px] items-end bg-brand bg-cover bg-center px-4 py-3"
+        style={trip.imageUrl ? { backgroundImage: `url(${trip.imageUrl})` } : undefined}
       >
         <div className="absolute inset-0 bg-gradient-to-b from-black/0 to-black/64" />
         <p className="relative text-2xl font-bold text-inverse">{trip.destination}</p>

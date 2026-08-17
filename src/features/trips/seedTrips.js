@@ -14,6 +14,7 @@ export const seedTrips = [
     endDate: '2026-08-21',
     totalBudget: 10_000_000,
     spentAmount: 5_750_000,
+    currency: 'COP',
     status: 'ongoing',
   },
   {
@@ -24,6 +25,7 @@ export const seedTrips = [
     endDate: '2026-09-10',
     totalBudget: 3_000_000,
     spentAmount: 450_000,
+    currency: 'COP',
     status: 'upcoming',
   },
   {
@@ -34,6 +36,7 @@ export const seedTrips = [
     endDate: '2026-10-14',
     totalBudget: 8_500_000,
     spentAmount: 1_200_000,
+    currency: 'COP',
     status: 'upcoming',
   },
   {
@@ -44,6 +47,7 @@ export const seedTrips = [
     endDate: '2026-11-23',
     totalBudget: 1_500_000,
     spentAmount: 0,
+    currency: 'COP',
     status: 'upcoming',
   },
   {
@@ -54,6 +58,7 @@ export const seedTrips = [
     endDate: '2026-06-05',
     totalBudget: 1_200_000,
     spentAmount: 1_150_000,
+    currency: 'COP',
     status: 'completed',
   },
   {
@@ -64,6 +69,7 @@ export const seedTrips = [
     endDate: '2026-04-20',
     totalBudget: 6_000_000,
     spentAmount: 5_980_000,
+    currency: 'COP',
     status: 'completed',
   },
 ];
