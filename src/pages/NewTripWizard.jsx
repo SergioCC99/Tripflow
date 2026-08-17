@@ -70,7 +70,6 @@ export function NewTripWizard() {
       endDate: form.endDate,
       currency: form.currency,
       totalBudget: form.totalBudget,
-      spentAmount: 0,
       status: deriveTripStatus(form.startDate, form.endDate),
     });
     setSubmitted(true);

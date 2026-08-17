@@ -1,7 +1,7 @@
 import { Route, Routes, useLocation } from 'react-router-dom';
 import { TripHubPage } from './pages/TripHubPage';
 import { NewTripWizard } from './pages/NewTripWizard';
-import { ComingSoonPage } from './pages/ComingSoonPage';
+import { TripDashboardPage } from './pages/TripDashboardPage';
 
 export default function App() {
   const location = useLocation();
@@ -11,7 +11,7 @@ export default function App() {
     <>
       <Routes location={isCreatingTrip ? { ...location, pathname: '/' } : location}>
         <Route path="/" element={<TripHubPage />} />
-        <Route path="/viajes/:tripId" element={<ComingSoonPage title="Dashboard del viaje" />} />
+        <Route path="/viajes/:tripId" element={<TripDashboardPage />} />
       </Routes>
       {isCreatingTrip && <NewTripWizard />}
     </>

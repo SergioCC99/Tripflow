@@ -1,11 +1,14 @@
 import { Link } from 'react-router-dom';
 import { countTripDays, formatCurrencyCOP, formatShortDate } from '../../lib/format';
+import { useExpenses } from '../../features/expenses/ExpensesProvider';
 import { ProgressBar } from '../ui/ProgressBar';
 import dividerIcon from '../../assets/icons/divider.svg';
 import dotIcon from '../../assets/icons/dot.svg';
 
 export function TripCard({ trip }) {
   const days = countTripDays(trip.startDate, trip.endDate);
+  const { getTripSpent } = useExpenses();
+  const spentAmount = getTripSpent(trip.id);
 
   return (
     <Link
@@ -33,11 +36,11 @@ export function TripCard({ trip }) {
 
         <div className="flex w-full flex-col gap-1">
           <span className="text-xs text-muted">Gastado</span>
-          <span className="text-2xl font-bold text-ink">{formatCurrencyCOP(trip.spentAmount)}</span>
+          <span className="text-2xl font-bold text-ink">{formatCurrencyCOP(spentAmount)}</span>
           <span className="text-xs text-muted">De {formatCurrencyCOP(trip.totalBudget)}</span>
         </div>
 
-        <ProgressBar value={trip.spentAmount} max={trip.totalBudget} />
+        <ProgressBar value={spentAmount} max={trip.totalBudget} />
       </div>
     </Link>
   );

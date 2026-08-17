@@ -1,6 +1,6 @@
 import clsx from 'clsx';
 
-export function TabGroup({ options, value, onChange }) {
+export function TabGroup({ options, value, onChange, size = 'md' }) {
   return (
     <div className="flex flex-wrap items-center gap-2" role="tablist">
       {options.map((option) => {
@@ -13,7 +13,9 @@ export function TabGroup({ options, value, onChange }) {
             aria-selected={isActive}
             onClick={() => onChange(option.value)}
             className={clsx(
-              'cursor-pointer rounded-full border border-ink px-4 py-3 text-sm transition-colors',
+              'cursor-pointer rounded-full border border-ink transition-colors',
+              size === 'md' && 'px-4 py-3 text-sm',
+              size === 'sm' && 'px-3 py-2 text-xs',
               isActive ? 'bg-ink text-inverse' : 'bg-surface text-ink hover:bg-surface-muted',
             )}
           >

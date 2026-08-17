@@ -15,7 +15,7 @@ export function Button({ icon, children, className, variant = 'solid', size = 'm
       )}
       {...props}
     >
-      <span>{children}</span>
+      {children && <span>{children}</span>}
       {icon}
     </button>
   );
