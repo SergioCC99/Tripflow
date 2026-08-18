@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { Button } from '../ui/Button';
 import { ExpenseFormFields } from './ExpenseFormFields';
-import { ExpenseConfirmationCard } from './ExpenseConfirmationCard';
+import { ConfirmationCard } from '../ui/ConfirmationCard';
 import { ExpenseSummaryCard } from './ExpenseSummaryCard';
 import { DEFAULT_CATEGORY_ID } from '../../features/expenses/categories';
 import { DEFAULT_PAYMENT_METHOD_ID } from '../../features/expenses/paymentMethods';
@@ -123,7 +123,7 @@ export function EditExpenseSheet({ trip, expense, open, onClose }) {
           onClick={(event) => event.stopPropagation()}
         >
           {status === 'edited' && (
-            <ExpenseConfirmationCard
+            <ConfirmationCard
               icon={checkIcon}
               iconClassName="h-[27px] w-[38px]"
               circleClassName="bg-brand"
@@ -132,11 +132,11 @@ export function EditExpenseSheet({ trip, expense, open, onClose }) {
               onContinue={onClose}
             >
               <ExpenseSummaryCard expense={editedExpensePreview} />
-            </ExpenseConfirmationCard>
+            </ConfirmationCard>
           )}
 
           {status === 'confirmDelete' && (
-            <ExpenseConfirmationCard
+            <ConfirmationCard
               icon={questionMarkIcon}
               iconClassName="h-[26px] w-[16px]"
               circleClassName="bg-surface-muted"
@@ -146,11 +146,11 @@ export function EditExpenseSheet({ trip, expense, open, onClose }) {
               onCancel={() => setStatus('form')}
             >
               <ExpenseSummaryCard expense={expense} />
-            </ExpenseConfirmationCard>
+            </ConfirmationCard>
           )}
 
           {status === 'deleted' && (
-            <ExpenseConfirmationCard
+            <ConfirmationCard
               icon={trashIcon}
               iconClassName="h-[32px] w-[29px]"
               circleClassName="bg-danger-bg"
@@ -159,7 +159,7 @@ export function EditExpenseSheet({ trip, expense, open, onClose }) {
               onContinue={onClose}
             >
               <ExpenseSummaryCard expense={expense} />
-            </ExpenseConfirmationCard>
+            </ConfirmationCard>
           )}
 
           {status === 'form' && (

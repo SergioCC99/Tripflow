@@ -1,4 +1,4 @@
-import { ExpenseConfirmationCard } from './ExpenseConfirmationCard';
+import { ConfirmationCard } from '../ui/ConfirmationCard';
 import { ExpenseSummaryCard } from './ExpenseSummaryCard';
 import checkIcon from '../../assets/icons/check.svg';
 
@@ -14,7 +14,7 @@ export function ExpenseConfirmationModal({ open, expense, onClose }) {
         onClick={onClose}
       >
         <div onClick={(event) => event.stopPropagation()}>
-          <ExpenseConfirmationCard
+          <ConfirmationCard
             icon={checkIcon}
             iconClassName="h-[27px] w-[38px]"
             circleClassName="bg-brand"
@@ -23,7 +23,7 @@ export function ExpenseConfirmationModal({ open, expense, onClose }) {
             onContinue={onClose}
           >
             <ExpenseSummaryCard expense={expense} />
-          </ExpenseConfirmationCard>
+          </ConfirmationCard>
         </div>
       </div>
     </div>

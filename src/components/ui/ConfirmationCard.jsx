@@ -1,7 +1,7 @@
 import clsx from 'clsx';
-import { Button } from '../ui/Button';
+import { Button } from './Button';
 
-export function ExpenseConfirmationCard({
+export function ConfirmationCard({
   icon,
   iconClassName,
   circleClassName,

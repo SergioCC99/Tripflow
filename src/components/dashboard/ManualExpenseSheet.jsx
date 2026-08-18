@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import clsx from 'clsx';
 import { Button } from '../ui/Button';
 import { ExpenseFormFields } from './ExpenseFormFields';
-import { ExpenseConfirmationCard } from './ExpenseConfirmationCard';
+import { ConfirmationCard } from '../ui/ConfirmationCard';
 import { ExpenseSummaryCard } from './ExpenseSummaryCard';
 import { DEFAULT_CATEGORY_ID } from '../../features/expenses/categories';
 import { DEFAULT_PAYMENT_METHOD_ID } from '../../features/expenses/paymentMethods';
@@ -112,7 +112,7 @@ export function ManualExpenseSheet({ trip, open, onClose }) {
           onClick={(event) => event.stopPropagation()}
         >
           {submitted ? (
-            <ExpenseConfirmationCard
+            <ConfirmationCard
               icon={checkIcon}
               iconClassName="h-[27px] w-[38px]"
               circleClassName="bg-brand"
@@ -121,7 +121,7 @@ export function ManualExpenseSheet({ trip, open, onClose }) {
               onContinue={onClose}
             >
               <ExpenseSummaryCard expense={submittedExpense} />
-            </ExpenseConfirmationCard>
+            </ConfirmationCard>
           ) : (
             <>
               <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-4 lg:p-6">

@@ -11,6 +11,7 @@ import { DashboardChart } from '../components/dashboard/DashboardChart';
 import { ExpenseHistoryList } from '../components/dashboard/ExpenseHistoryList';
 import { AddExpenseBar } from '../components/dashboard/AddExpenseBar';
 import { EditExpenseSheet } from '../components/dashboard/EditExpenseSheet';
+import { EditTripSheet } from '../components/trips/EditTripSheet';
 import { countTripDays, formatCurrencyCOP, formatShortDate } from '../lib/format';
 import dotIcon from '../assets/icons/dot.svg';
 import editIcon from '../assets/icons/edit.svg';
@@ -37,6 +38,7 @@ export function TripDashboardPage() {
   const { trips } = useTrips();
   const { expensesByTrip, getTripSpent } = useExpenses();
   const [editingExpense, setEditingExpense] = useState(null);
+  const [editTripOpen, setEditTripOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
 
   useEffect(() => {
@@ -47,7 +49,16 @@ export function TripDashboardPage() {
 
   const goBackToHub = () => setIsClosing(true);
 
-  const trip = trips.find((candidate) => candidate.id === tripId);
+  const liveTrip = trips.find((candidate) => candidate.id === tripId);
+  const [stableTrip, setStableTrip] = useState(liveTrip ?? null);
+
+  useEffect(() => {
+    if (liveTrip) setStableTrip(liveTrip);
+  }, [liveTrip]);
+
+  // Se conserva la última versión válida del viaje mientras se muestra la confirmación
+  // de borrado, ya que en ese punto `trips` ya no lo contiene.
+  const trip = liveTrip ?? stableTrip;
 
   if (!trip) {
     return (
@@ -83,7 +94,9 @@ export function TripDashboardPage() {
               </div>
               <img src={dotIcon} alt="" className="size-1" />
               <span className="text-xs text-muted">{totalDays} días</span>
-              <img src={editIcon} alt="" className="size-[14px]" />
+              <button type="button" onClick={() => setEditTripOpen(true)} aria-label="Editar viaje" className="cursor-pointer">
+                <img src={editIcon} alt="" className="size-[14px]" />
+              </button>
             </div>
           </div>
 
@@ -133,6 +146,13 @@ export function TripDashboardPage() {
         expense={editingExpense}
         open={Boolean(editingExpense)}
         onClose={() => setEditingExpense(null)}
+      />
+
+      <EditTripSheet
+        trip={trip}
+        open={editTripOpen}
+        onClose={() => setEditTripOpen(false)}
+        onDeleted={goBackToHub}
       />
     </div>
   );

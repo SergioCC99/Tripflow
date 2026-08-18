@@ -39,6 +39,14 @@ export function ExpensesProvider({ children }) {
     });
   };
 
+  const deleteExpensesByTrip = (tripId) => {
+    setExpenses((prev) => {
+      const next = prev.filter((expense) => expense.tripId !== tripId);
+      saveExpenses(next);
+      return next;
+    });
+  };
+
   const expensesByTrip = useMemo(() => {
     return (tripId) => expenses.filter((expense) => expense.tripId === tripId);
   }, [expenses]);
@@ -48,7 +56,7 @@ export function ExpensesProvider({ children }) {
   }, [expensesByTrip]);
 
   const value = useMemo(
-    () => ({ expenses, addExpense, updateExpense, deleteExpense, expensesByTrip, getTripSpent }),
+    () => ({ expenses, addExpense, updateExpense, deleteExpense, deleteExpensesByTrip, expensesByTrip, getTripSpent }),
     [expenses, expensesByTrip, getTripSpent],
   );
 

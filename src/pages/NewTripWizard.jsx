@@ -14,6 +14,7 @@ import { deriveTripStatus } from '../features/trips/deriveTripStatus';
 import { countTripDays, formatCurrencyCOP, formatThousands, parseThousands } from '../lib/format';
 import checkIcon from '../assets/icons/check.svg';
 import dollarIcon from '../assets/icons/dollar.svg';
+import defaultTripImage from '../assets/images/Default_Img.png';
 
 const STEP_COUNT = 4;
 const CLOSE_ANIMATION_MS = 260;
@@ -85,7 +86,7 @@ export function NewTripWizard() {
     addTrip({
       id,
       destination: form.destination.trim(),
-      imageUrl: form.coverPhoto,
+      imageUrl: form.coverPhoto || defaultTripImage,
       startDate: form.startDate,
       endDate: form.endDate,
       currency: form.currency,

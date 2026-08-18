@@ -23,11 +23,30 @@ export function TripsProvider({ children }) {
     });
   };
 
+  const updateTrip = (id, patch) => {
+    setTrips((prev) => {
+      const next = prev.map((trip) => (trip.id === id ? { ...trip, ...patch } : trip));
+      saveTrips(next);
+      return next;
+    });
+  };
+
+  const deleteTrip = (id) => {
+    setTrips((prev) => {
+      const next = prev.filter((trip) => trip.id !== id);
+      saveTrips(next);
+      return next;
+    });
+  };
+
   const tripsByStatus = useMemo(() => {
     return (status) => trips.filter((trip) => trip.status === status);
   }, [trips]);
 
-  const value = useMemo(() => ({ trips, addTrip, tripsByStatus }), [trips, tripsByStatus]);
+  const value = useMemo(
+    () => ({ trips, addTrip, updateTrip, deleteTrip, tripsByStatus }),
+    [trips, tripsByStatus],
+  );
 
   return <TripsContext.Provider value={value}>{children}</TripsContext.Provider>;
 }
