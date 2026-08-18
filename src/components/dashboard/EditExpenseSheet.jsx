@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { Button } from '../ui/Button';
 import { ExpenseFormFields } from './ExpenseFormFields';
 import { ExpenseConfirmationCard } from './ExpenseConfirmationCard';
+import { ExpenseSummaryCard } from './ExpenseSummaryCard';
 import { DEFAULT_CATEGORY_ID } from '../../features/expenses/categories';
 import { DEFAULT_PAYMENT_METHOD_ID } from '../../features/expenses/paymentMethods';
 import { useExpenses } from '../../features/expenses/ExpensesProvider';
@@ -10,6 +11,7 @@ import { fetchExchangeRate } from '../../features/expenses/exchangeRate';
 import { formatThousands, parseThousands } from '../../lib/format';
 import checkIcon from '../../assets/icons/check.svg';
 import trashIcon from '../../assets/icons/trash.svg';
+import questionMarkIcon from '../../assets/icons/question-mark.svg';
 
 export function EditExpenseSheet({ trip, expense, open, onClose }) {
   const { updateExpense, deleteExpense } = useExpenses();
@@ -68,6 +70,13 @@ export function EditExpenseSheet({ trip, expense, open, onClose }) {
 
   const canSubmit = isForeignCurrency ? convertedAmount > 0 : rawAmount > 0;
 
+  const editedExpensePreview = {
+    description: description.trim() || 'Gasto',
+    categoryId: categoryId ?? DEFAULT_CATEGORY_ID,
+    paymentMethodId: paymentMethodId ?? DEFAULT_PAYMENT_METHOD_ID,
+    amount: isForeignCurrency ? convertedAmount : rawAmount,
+  };
+
   const handleUpdate = () => {
     if (!canSubmit || !expense) return;
 
@@ -86,6 +95,11 @@ export function EditExpenseSheet({ trip, expense, open, onClose }) {
   };
 
   const handleDelete = () => {
+    if (!expense) return;
+    setStatus('confirmDelete');
+  };
+
+  const handleConfirmDelete = () => {
     if (!expense) return;
     deleteExpense(expense.id);
     setStatus('deleted');
@@ -116,7 +130,23 @@ export function EditExpenseSheet({ trip, expense, open, onClose }) {
               title="¡Gasto modificado con éxito!"
               description="Los cambios se han guardado correctamente."
               onContinue={onClose}
-            />
+            >
+              <ExpenseSummaryCard expense={editedExpensePreview} />
+            </ExpenseConfirmationCard>
+          )}
+
+          {status === 'confirmDelete' && (
+            <ExpenseConfirmationCard
+              icon={questionMarkIcon}
+              iconClassName="h-[26px] w-[16px]"
+              circleClassName="bg-surface-muted"
+              title="¿Está seguro que desea eliminarlo?"
+              description="Al confirmar la acción, no se podrá recuperar la información."
+              onContinue={handleConfirmDelete}
+              onCancel={() => setStatus('form')}
+            >
+              <ExpenseSummaryCard expense={expense} />
+            </ExpenseConfirmationCard>
           )}
 
           {status === 'deleted' && (
@@ -127,7 +157,9 @@ export function EditExpenseSheet({ trip, expense, open, onClose }) {
               title="¡Gasto eliminado!"
               description="El gasto ha sido eliminado correctamente."
               onContinue={onClose}
-            />
+            >
+              <ExpenseSummaryCard expense={expense} />
+            </ExpenseConfirmationCard>
           )}
 
           {status === 'form' && (

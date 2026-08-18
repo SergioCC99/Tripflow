@@ -102,3 +102,25 @@ body {
 ::view-transition-new(root) {
   animation-duration: 220ms;
 }
+
+@keyframes mic-waves {
+  0% {
+    box-shadow:
+      0 0 0 0 rgba(168, 204, 79, 0.55),
+      0 0 0 0 rgba(168, 204, 79, 0.35);
+  }
+  70% {
+    box-shadow:
+      0 0 0 10px rgba(168, 204, 79, 0),
+      0 0 0 20px rgba(168, 204, 79, 0);
+  }
+  100% {
+    box-shadow:
+      0 0 0 10px rgba(168, 204, 79, 0),
+      0 0 0 20px rgba(168, 204, 79, 0);
+  }
+}
+
+.animate-mic-waves {
+  animation: mic-waves 1.6s ease-out infinite;
+}

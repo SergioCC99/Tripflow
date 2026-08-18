@@ -5,27 +5,41 @@ function getSpeechRecognitionCtor() {
   return window.SpeechRecognition || window.webkitSpeechRecognition || null;
 }
 
-export function useSpeechToText({ lang = 'es-CO', onResult } = {}) {
+export function useSpeechToText({ lang = 'es-CO', onResult, onFinalResult } = {}) {
   const RecognitionCtor = getSpeechRecognitionCtor();
   const isSupported = Boolean(RecognitionCtor);
   const [isListening, setIsListening] = useState(false);
   const recognitionRef = useRef(null);
+  const transcriptRef = useRef('');
   const onResultRef = useRef(onResult);
+  const onFinalResultRef = useRef(onFinalResult);
   onResultRef.current = onResult;
+  onFinalResultRef.current = onFinalResult;
 
   useEffect(() => {
     if (!isSupported) return undefined;
 
     const recognition = new RecognitionCtor();
     recognition.lang = lang;
+    // Modo continuo: no corta al primer silencio, así se permite dictar frases largas.
+    recognition.continuous = true;
     recognition.interimResults = false;
     recognition.maxAlternatives = 1;
 
     recognition.onresult = (event) => {
-      const transcript = event.results[0]?.[0]?.transcript ?? '';
-      onResultRef.current?.(transcript);
+      let combined = '';
+      for (let i = 0; i < event.results.length; i += 1) {
+        combined += event.results[i][0]?.transcript ?? '';
+      }
+      transcriptRef.current = combined.trim();
+      onResultRef.current?.(transcriptRef.current);
     };
-    recognition.onend = () => setIsListening(false);
+    recognition.onend = () => {
+      setIsListening(false);
+      const finalTranscript = transcriptRef.current;
+      transcriptRef.current = '';
+      if (finalTranscript) onFinalResultRef.current?.(finalTranscript);
+    };
     recognition.onerror = () => setIsListening(false);
 
     recognitionRef.current = recognition;
@@ -34,6 +48,7 @@ export function useSpeechToText({ lang = 'es-CO', onResult } = {}) {
 
   const start = useCallback(() => {
     if (!recognitionRef.current || isListening) return;
+    transcriptRef.current = '';
     setIsListening(true);
     recognitionRef.current.start();
   }, [isListening]);

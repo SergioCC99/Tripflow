@@ -3,6 +3,7 @@ import clsx from 'clsx';
 import { Button } from '../ui/Button';
 import { ExpenseFormFields } from './ExpenseFormFields';
 import { ExpenseConfirmationCard } from './ExpenseConfirmationCard';
+import { ExpenseSummaryCard } from './ExpenseSummaryCard';
 import { DEFAULT_CATEGORY_ID } from '../../features/expenses/categories';
 import { DEFAULT_PAYMENT_METHOD_ID } from '../../features/expenses/paymentMethods';
 import { useExpenses } from '../../features/expenses/ExpensesProvider';
@@ -17,6 +18,7 @@ function todayIso() {
 export function ManualExpenseSheet({ trip, open, onClose }) {
   const { addExpense } = useExpenses();
   const [submitted, setSubmitted] = useState(false);
+  const [submittedExpense, setSubmittedExpense] = useState(null);
   const [description, setDescription] = useState('');
   const [categoryId, setCategoryId] = useState(null);
   const [paymentMethodId, setPaymentMethodId] = useState(null);
@@ -74,7 +76,7 @@ export function ManualExpenseSheet({ trip, open, onClose }) {
   const handleSubmit = () => {
     if (!canSubmit) return;
 
-    addExpense({
+    const expense = {
       id: crypto.randomUUID(),
       tripId: trip.id,
       description: description.trim() || 'Gasto',
@@ -85,8 +87,10 @@ export function ManualExpenseSheet({ trip, open, onClose }) {
       ...(isForeignCurrency ? { originalAmount: rawAmount, originalCurrency: currency } : {}),
       date,
       createdAt: Date.now(),
-    });
+    };
 
+    addExpense(expense);
+    setSubmittedExpense(expense);
     setSubmitted(true);
   };
 
@@ -115,7 +119,9 @@ export function ManualExpenseSheet({ trip, open, onClose }) {
               title="¡Gasto registrado con éxito!"
               description="Tu gasto se ha añadido correctamente a tu viaje."
               onContinue={onClose}
-            />
+            >
+              <ExpenseSummaryCard expense={submittedExpense} />
+            </ExpenseConfirmationCard>
           ) : (
             <>
               <div className="flex flex-1 flex-col gap-4 overflow-y-auto p-4 lg:p-6">

@@ -1,7 +1,8 @@
 import { ExpenseConfirmationCard } from './ExpenseConfirmationCard';
+import { ExpenseSummaryCard } from './ExpenseSummaryCard';
 import checkIcon from '../../assets/icons/check.svg';
 
-export function ExpenseConfirmationModal({ open, onClose }) {
+export function ExpenseConfirmationModal({ open, expense, onClose }) {
   if (!open) return null;
 
   return (
@@ -20,7 +21,9 @@ export function ExpenseConfirmationModal({ open, onClose }) {
             title="¡Gasto registrado con éxito!"
             description="Tu gasto se ha añadido correctamente a tu viaje."
             onContinue={onClose}
-          />
+          >
+            <ExpenseSummaryCard expense={expense} />
+          </ExpenseConfirmationCard>
         </div>
       </div>
     </div>
