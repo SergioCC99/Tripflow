@@ -1,7 +1,15 @@
 import clsx from 'clsx';
+import { getBudgetStatus } from '../../features/trips/budgetStatus';
+
+const BAR_COLOR_BY_STATUS = {
+  default: 'bg-brand',
+  warning: 'bg-warning',
+  danger: 'bg-danger',
+};
 
 export function ProgressBar({ value, max, trackClassName = 'bg-surface' }) {
   const percent = max > 0 ? Math.min(100, Math.max(0, (value / max) * 100)) : 0;
+  const status = getBudgetStatus(value, max);
 
   return (
     <div
@@ -11,7 +19,7 @@ export function ProgressBar({ value, max, trackClassName = 'bg-surface' }) {
       aria-valuemin={0}
       aria-valuemax={100}
     >
-      <div className="h-full rounded-lg bg-brand" style={{ width: `${percent}%` }} />
+      <div className={clsx('h-full rounded-lg', BAR_COLOR_BY_STATUS[status])} style={{ width: `${percent}%` }} />
     </div>
   );
 }

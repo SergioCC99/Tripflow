@@ -20,7 +20,9 @@ function parseIsoDate(isoDate) {
 }
 
 export function formatCurrencyCOP(amount) {
-  return `$${currencyFormatter.format(Math.round(amount))}`;
+  const rounded = Math.round(amount);
+  const sign = rounded < 0 ? '-' : '';
+  return `${sign}$${currencyFormatter.format(Math.abs(rounded))}`;
 }
 
 export function formatShortDate(isoDate) {

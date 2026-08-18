@@ -5,6 +5,7 @@ import { useExpenses } from '../features/expenses/ExpensesProvider';
 import { Avatar } from '../components/ui/Avatar';
 import { ButtonBack } from '../components/ui/ButtonBack';
 import { BudgetSummary } from '../components/dashboard/BudgetSummary';
+import { TripAlertBanner } from '../components/dashboard/TripAlertBanner';
 import { MetricCard } from '../components/dashboard/MetricCard';
 import { DashboardChart } from '../components/dashboard/DashboardChart';
 import { ExpenseHistoryList } from '../components/dashboard/ExpenseHistoryList';
@@ -79,6 +80,8 @@ export function TripDashboardPage() {
       </header>
 
       <main className="mx-auto flex w-full max-w-[1200px] flex-col gap-6 px-4 py-6 lg:px-6">
+        <TripAlertBanner trip={trip} spentAmount={spentAmount} />
+
         <BudgetSummary trip={trip} spentAmount={spentAmount} />
 
         <div className="flex w-full gap-4">

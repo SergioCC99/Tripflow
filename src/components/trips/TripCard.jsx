@@ -1,13 +1,17 @@
 import { Link } from 'react-router-dom';
 import { countTripDays, formatCurrencyCOP, formatShortDate } from '../../lib/format';
 import { useExpenses } from '../../features/expenses/ExpensesProvider';
+import { getBudgetStatus } from '../../features/trips/budgetStatus';
 import { ProgressBar } from '../ui/ProgressBar';
+import { BudgetExcess } from '../ui/BudgetExcess';
 import dotIcon from '../../assets/icons/dot.svg';
 
 export function TripCard({ trip }) {
   const days = countTripDays(trip.startDate, trip.endDate);
   const { getTripSpent } = useExpenses();
   const spentAmount = getTripSpent(trip.id);
+  const isDanger = getBudgetStatus(spentAmount, trip.totalBudget) === 'danger';
+  const excessAmount = Math.max(0, spentAmount - trip.totalBudget);
 
   return (
     <Link
@@ -36,7 +40,10 @@ export function TripCard({ trip }) {
         <div className="flex w-full flex-col gap-1">
           <span className="text-xs text-muted">Gastado</span>
           <span className="text-2xl font-bold text-ink">{formatCurrencyCOP(spentAmount)}</span>
-          <span className="text-xs text-muted">De {formatCurrencyCOP(trip.totalBudget)}</span>
+          <div className="flex w-full items-end justify-between">
+            <span className="text-xs text-muted">De {formatCurrencyCOP(trip.totalBudget)}</span>
+            {isDanger && <BudgetExcess amount={excessAmount} />}
+          </div>
         </div>
 
         <ProgressBar value={spentAmount} max={trip.totalBudget} />

@@ -16,6 +16,10 @@
   --color-divider: #dedede;
   --color-alert-bg: #f7ffe0;
   --color-danger-bg: #ffdbdb;
+  --color-warning-bg: #ffeed5;
+  --color-brand-dark: #a8cc4f;
+  --color-warning-dark: #c96a1a;
+  --color-danger-dark: #9b2f2f;
 }
 
 body {
@@ -23,4 +27,13 @@ body {
   font-family: var(--font-sans);
   color: var(--color-ink);
   background: var(--color-surface);
+}
+
+@keyframes alert-countdown {
+  from {
+    width: 100%;
+  }
+  to {
+    width: 0%;
+  }
 }
