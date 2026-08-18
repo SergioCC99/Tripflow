@@ -47,6 +47,18 @@ export function ExpensesProvider({ children }) {
     });
   };
 
+  const convertTripExpensesCurrency = (tripId, rate, newCurrency) => {
+    setExpenses((prev) => {
+      const next = prev.map((expense) =>
+        expense.tripId === tripId
+          ? { ...expense, amount: Math.round(expense.amount * rate), currency: newCurrency }
+          : expense,
+      );
+      saveExpenses(next);
+      return next;
+    });
+  };
+
   const expensesByTrip = useMemo(() => {
     return (tripId) => expenses.filter((expense) => expense.tripId === tripId);
   }, [expenses]);
@@ -56,7 +68,16 @@ export function ExpensesProvider({ children }) {
   }, [expensesByTrip]);
 
   const value = useMemo(
-    () => ({ expenses, addExpense, updateExpense, deleteExpense, deleteExpensesByTrip, expensesByTrip, getTripSpent }),
+    () => ({
+      expenses,
+      addExpense,
+      updateExpense,
+      deleteExpense,
+      deleteExpensesByTrip,
+      convertTripExpensesCurrency,
+      expensesByTrip,
+      getTripSpent,
+    }),
     [expenses, expensesByTrip, getTripSpent],
   );
 

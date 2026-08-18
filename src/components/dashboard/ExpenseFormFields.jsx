@@ -2,9 +2,9 @@ import clsx from 'clsx';
 import { TextField } from '../ui/TextField';
 import { DateField } from '../ui/DateField';
 import { InfoAlert } from '../ui/InfoAlert';
+import { CurrencySelect } from '../ui/CurrencySelect';
 import { CATEGORIES } from '../../features/expenses/categories';
 import { PAYMENT_METHODS } from '../../features/expenses/paymentMethods';
-import { CURRENCIES } from '../../features/trips/currencies';
 import { formatCurrencyCOP } from '../../lib/format';
 import dollarIcon from '../../assets/icons/dollar.svg';
 
@@ -42,17 +42,11 @@ export function ExpenseFormFields({
       <div className="flex w-full flex-col gap-1">
         <span className="text-base text-ink">Monto</span>
         <div className="flex w-full items-center gap-2">
-          <select
+          <CurrencySelect
+            variant="compact"
             value={currency}
             onChange={(event) => onCurrencyChange(event.target.value)}
-            className="w-16 shrink-0 appearance-none rounded-xl border-none bg-surface-muted py-3 text-center text-base text-ink focus:outline-none"
-          >
-            {CURRENCIES.map((option) => (
-              <option key={option.code} value={option.code}>
-                {option.code}
-              </option>
-            ))}
-          </select>
+          />
           <TextField
             icon={dollarIcon}
             inputMode="numeric"

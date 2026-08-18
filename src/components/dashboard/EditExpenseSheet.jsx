@@ -51,10 +51,32 @@ export function EditExpenseSheet({ trip, expense, open, onClose }) {
   useEffect(() => {
     if (!isForeignCurrency) {
       setConvertedAmount(rawAmount);
+      setRateStatus('idle');
+      return undefined;
     }
-    // Al cambiar de moneda, si ya hay un monto escrito, se consulta la tasa de una vez.
+
+    if (rawAmount <= 0) return undefined;
+
+    let cancelled = false;
+    setRateStatus('loading');
+
+    fetchExchangeRate(currency, trip.currency).then((rate) => {
+      if (cancelled) return;
+      if (rate === null) {
+        setRateStatus('error');
+        return;
+      }
+      setConvertedAmount(Math.round(rawAmount * rate));
+      setRateStatus('idle');
+    });
+
+    return () => {
+      cancelled = true;
+    };
+    // Al cambiar de moneda, si ya hay un monto escrito, se consulta la tasa de una vez;
+    // el monto usado es el vigente en ese momento (vía closure), no en cada tecla.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currency, isForeignCurrency]);
+  }, [currency, trip.currency, isForeignCurrency]);
 
   const refreshRate = async () => {
     if (!isForeignCurrency || rawAmount <= 0) return;

@@ -10,6 +10,7 @@ import { ConfirmationCard } from '../ui/ConfirmationCard';
 import { useTrips } from '../../features/trips/TripsProvider';
 import { useExpenses } from '../../features/expenses/ExpensesProvider';
 import { deriveTripStatus } from '../../features/trips/deriveTripStatus';
+import { fetchExchangeRate } from '../../features/expenses/exchangeRate';
 import { countTripDays, formatCurrencyCOP, formatThousands, parseThousands } from '../../lib/format';
 import checkIcon from '../../assets/icons/check.svg';
 import trashIcon from '../../assets/icons/trash.svg';
@@ -21,9 +22,11 @@ const CLOSE_ANIMATION_MS = 260;
 
 export function EditTripSheet({ trip, open, onClose, onDeleted }) {
   const { updateTrip, deleteTrip } = useTrips();
-  const { deleteExpensesByTrip } = useExpenses();
+  const { deleteExpensesByTrip, convertTripExpensesCurrency } = useExpenses();
   const [status, setStatus] = useState('form');
   const [isClosing, setIsClosing] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
+  const [currencyConversionError, setCurrencyConversionError] = useState(false);
   const [destination, setDestination] = useState('');
   const [coverPhoto, setCoverPhoto] = useState('');
   const [startDate, setStartDate] = useState('');
@@ -36,6 +39,8 @@ export function EditTripSheet({ trip, open, onClose, onDeleted }) {
 
     setStatus('form');
     setIsClosing(false);
+    setIsSaving(false);
+    setCurrencyConversionError(false);
     setDestination(trip.destination);
     setCoverPhoto(trip.imageUrl ?? '');
     setStartDate(trip.startDate);
@@ -71,8 +76,32 @@ export function EditTripSheet({ trip, open, onClose, onDeleted }) {
 
   const canSubmit = destination.trim().length > 0 && hasValidDates && Boolean(currency) && totalBudget > 0;
 
-  const handleUpdate = () => {
-    if (!canSubmit) return;
+  const handleUpdate = async () => {
+    if (!canSubmit || isSaving) return;
+
+    setCurrencyConversionError(false);
+    const currencyChanged = currency !== trip.currency;
+    let finalBudget = totalBudget;
+
+    if (currencyChanged) {
+      setIsSaving(true);
+      const rate = await fetchExchangeRate(trip.currency, currency);
+      setIsSaving(false);
+
+      if (rate === null) {
+        setCurrencyConversionError(true);
+        return;
+      }
+
+      convertTripExpensesCurrency(trip.id, rate, currency);
+
+      // Si el presupuesto no fue tocado en esta edición, se convierte junto con los gastos
+      // para que siga representando el mismo valor real; si el usuario ya lo cambió, se
+      // respeta el número que escribió (se asume que ya lo pensó en la nueva moneda).
+      if (totalBudget === trip.totalBudget) {
+        finalBudget = Math.round(totalBudget * rate);
+      }
+    }
 
     updateTrip(trip.id, {
       destination: destination.trim(),
@@ -80,7 +109,7 @@ export function EditTripSheet({ trip, open, onClose, onDeleted }) {
       startDate,
       endDate,
       currency,
-      totalBudget,
+      totalBudget: finalBudget,
       status: deriveTripStatus(startDate, endDate),
     });
 
@@ -193,7 +222,15 @@ export function EditTripSheet({ trip, open, onClose, onDeleted }) {
 
                 <div className="flex w-full flex-col gap-4">
                   <CurrencySelect value={currency} onChange={(event) => setCurrency(event.target.value)} />
-                  <InfoAlert>Si registras un gasto en otra moneda, lo convertimos automáticamente.</InfoAlert>
+                  {currencyConversionError ? (
+                    <InfoAlert variant="danger">
+                      No se pudo actualizar tus gastos a la nueva moneda. Inténtalo de nuevo.
+                    </InfoAlert>
+                  ) : (
+                    <InfoAlert>
+                      Si cambias la moneda, convertimos automáticamente todos los gastos ya registrados.
+                    </InfoAlert>
+                  )}
                 </div>
 
                 <div className="flex w-full flex-col gap-4">
@@ -217,8 +254,8 @@ export function EditTripSheet({ trip, open, onClose, onDeleted }) {
                   <Button variant="outline" onClick={requestClose}>
                     Cancelar
                   </Button>
-                  <Button onClick={handleUpdate} disabled={!canSubmit} className="flex-1">
-                    Modificar
+                  <Button onClick={handleUpdate} disabled={!canSubmit || isSaving} className="flex-1">
+                    {isSaving ? 'Guardando…' : 'Modificar'}
                   </Button>
                 </div>
                 <Button
