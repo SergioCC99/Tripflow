@@ -1,13 +1,15 @@
 export const PAYMENT_METHODS = [
   {
-    id: 'cash',
-    label: 'Efectivo',
-    keywords: ['efectivo', 'cash'],
-  },
-  {
     id: 'card',
     label: 'Tarjeta',
+    emoji: '💳',
     keywords: ['tarjeta', 'card', 'credito', 'debito'],
+  },
+  {
+    id: 'cash',
+    label: 'Efectivo',
+    emoji: '💵',
+    keywords: ['efectivo', 'cash'],
   },
 ];
 

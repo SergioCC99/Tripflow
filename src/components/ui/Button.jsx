@@ -11,6 +11,7 @@ export function Button({ icon, children, className, variant = 'solid', size = 'm
         variant === 'solid' && 'bg-ink text-inverse',
         variant === 'outline' && 'border border-ink text-ink',
         variant === 'white' && 'border border-ink bg-surface text-ink',
+        variant === 'danger' && 'text-danger',
         className,
       )}
       {...props}

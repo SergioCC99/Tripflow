@@ -23,6 +23,22 @@ export function ExpensesProvider({ children }) {
     });
   };
 
+  const updateExpense = (id, patch) => {
+    setExpenses((prev) => {
+      const next = prev.map((expense) => (expense.id === id ? { ...expense, ...patch } : expense));
+      saveExpenses(next);
+      return next;
+    });
+  };
+
+  const deleteExpense = (id) => {
+    setExpenses((prev) => {
+      const next = prev.filter((expense) => expense.id !== id);
+      saveExpenses(next);
+      return next;
+    });
+  };
+
   const expensesByTrip = useMemo(() => {
     return (tripId) => expenses.filter((expense) => expense.tripId === tripId);
   }, [expenses]);
@@ -32,7 +48,7 @@ export function ExpensesProvider({ children }) {
   }, [expensesByTrip]);
 
   const value = useMemo(
-    () => ({ expenses, addExpense, expensesByTrip, getTripSpent }),
+    () => ({ expenses, addExpense, updateExpense, deleteExpense, expensesByTrip, getTripSpent }),
     [expenses, expensesByTrip, getTripSpent],
   );
 

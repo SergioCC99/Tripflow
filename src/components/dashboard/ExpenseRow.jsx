@@ -6,13 +6,17 @@ import dotIcon from '../../assets/icons/dot.svg';
 
 const originalAmountFormatter = new Intl.NumberFormat('es-CO');
 
-export function ExpenseRow({ expense }) {
+export function ExpenseRow({ expense, onSelect }) {
   const category = getCategory(expense.categoryId);
   const method = getPaymentMethod(expense.paymentMethodId);
   const originalCurrency = expense.originalCurrency ? getCurrency(expense.originalCurrency) : null;
 
   return (
-    <div className="flex w-full items-center gap-3 py-3">
+    <button
+      type="button"
+      onClick={() => onSelect(expense)}
+      className="flex w-full cursor-pointer items-center gap-3 py-3 text-left transition-colors hover:bg-inverse"
+    >
       <div className="flex size-10 shrink-0 items-center justify-center rounded-xl bg-surface-muted text-xl">
         {category.emoji}
       </div>
@@ -35,6 +39,6 @@ export function ExpenseRow({ expense }) {
           </span>
         )}
       </div>
-    </div>
+    </button>
   );
 }

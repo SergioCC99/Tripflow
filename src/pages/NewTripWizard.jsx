@@ -84,7 +84,7 @@ export function NewTripWizard() {
           <ConfirmationCard onContinue={close} />
         </div>
       ) : (
-        <div className="relative flex size-full flex-col bg-surface lg:h-auto lg:max-h-[calc(100vh-48px)] lg:w-full lg:max-w-[685px] lg:overflow-y-auto lg:rounded-2xl lg:shadow-xl">
+        <div className="relative flex size-full flex-col overflow-hidden bg-surface lg:h-auto lg:max-h-[640px] lg:w-full lg:max-w-[685px] lg:rounded-2xl lg:shadow-xl">
             <div className="flex flex-1 flex-col gap-6 overflow-y-auto p-4 lg:p-6">
               <ButtonBack onClick={goBack} />
 

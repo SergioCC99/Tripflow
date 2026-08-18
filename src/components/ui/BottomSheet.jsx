@@ -22,7 +22,7 @@ export function BottomSheet({ open, onClose, title, children }) {
         onClick={onClose}
       >
         <div
-          className="flex w-full flex-col gap-4 rounded-t-3xl bg-surface p-6 lg:w-[420px] lg:rounded-2xl lg:shadow-xl"
+          className="flex max-h-[90vh] w-full flex-col gap-4 overflow-y-auto rounded-t-3xl bg-surface p-6 lg:max-h-[640px] lg:w-[420px] lg:rounded-2xl lg:shadow-xl"
           onClick={(event) => event.stopPropagation()}
         >
           <div className="flex items-center justify-between gap-4">

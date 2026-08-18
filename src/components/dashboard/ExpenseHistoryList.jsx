@@ -11,7 +11,7 @@ function dayLabel(dateIso, todayIso, yesterdayIso) {
   return formatShortDate(dateIso);
 }
 
-export function ExpenseHistoryList({ expenses }) {
+export function ExpenseHistoryList({ expenses, onSelectExpense }) {
   const todayIso = toISODate(new Date());
   const yesterdayIso = toISODate(new Date(Date.now() - 86_400_000));
 
@@ -42,7 +42,7 @@ export function ExpenseHistoryList({ expenses }) {
             </div>
 
             {dayExpenses.map((expense) => (
-              <ExpenseRow key={expense.id} expense={expense} />
+              <ExpenseRow key={expense.id} expense={expense} onSelect={onSelectExpense} />
             ))}
           </div>
         );

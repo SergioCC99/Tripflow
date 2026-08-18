@@ -2,7 +2,6 @@ import { Link } from 'react-router-dom';
 import { countTripDays, formatCurrencyCOP, formatShortDate } from '../../lib/format';
 import { useExpenses } from '../../features/expenses/ExpensesProvider';
 import { ProgressBar } from '../ui/ProgressBar';
-import dividerIcon from '../../assets/icons/divider.svg';
 import dotIcon from '../../assets/icons/dot.svg';
 
 export function TripCard({ trip }) {
@@ -27,7 +26,7 @@ export function TripCard({ trip }) {
         <div className="flex flex-wrap items-center gap-4">
           <div className="flex flex-wrap items-center gap-2">
             <span className="text-xs text-muted">{formatShortDate(trip.startDate)}</span>
-            <img src={dividerIcon} alt="" className="h-px w-2" />
+            <span className="h-px w-2 bg-muted" />
             <span className="text-xs text-muted">{formatShortDate(trip.endDate)}</span>
           </div>
           <img src={dotIcon} alt="" className="size-1" />

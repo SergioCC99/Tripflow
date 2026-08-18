@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useTrips } from '../features/trips/TripsProvider';
 import { useExpenses } from '../features/expenses/ExpensesProvider';
@@ -8,8 +9,8 @@ import { MetricCard } from '../components/dashboard/MetricCard';
 import { DashboardChart } from '../components/dashboard/DashboardChart';
 import { ExpenseHistoryList } from '../components/dashboard/ExpenseHistoryList';
 import { AddExpenseBar } from '../components/dashboard/AddExpenseBar';
+import { EditExpenseSheet } from '../components/dashboard/EditExpenseSheet';
 import { countTripDays, formatCurrencyCOP, formatShortDate } from '../lib/format';
-import dividerIcon from '../assets/icons/divider.svg';
 import dotIcon from '../assets/icons/dot.svg';
 import editIcon from '../assets/icons/edit.svg';
 
@@ -31,6 +32,7 @@ export function TripDashboardPage() {
   const navigate = useNavigate();
   const { trips } = useTrips();
   const { expensesByTrip, getTripSpent } = useExpenses();
+  const [editingExpense, setEditingExpense] = useState(null);
 
   const trip = trips.find((candidate) => candidate.id === tripId);
 
@@ -63,7 +65,7 @@ export function TripDashboardPage() {
             <div className="flex flex-wrap items-center gap-4">
               <div className="flex items-center gap-2">
                 <span className="text-xs text-muted">{formatShortDate(trip.startDate)}</span>
-                <img src={dividerIcon} alt="" className="h-px w-2" />
+                <span className="h-px w-2 bg-muted" />
                 <span className="text-xs text-muted">{formatShortDate(trip.endDate)}</span>
               </div>
               <img src={dotIcon} alt="" className="size-1" />
@@ -104,11 +106,18 @@ export function TripDashboardPage() {
 
         <div className="flex w-full flex-col gap-6">
           <h2 className="text-xl font-bold text-ink">Historial de gastos</h2>
-          <ExpenseHistoryList expenses={expenses} />
+          <ExpenseHistoryList expenses={expenses} onSelectExpense={setEditingExpense} />
         </div>
       </main>
 
       <AddExpenseBar trip={trip} />
+
+      <EditExpenseSheet
+        trip={trip}
+        expense={editingExpense}
+        open={Boolean(editingExpense)}
+        onClose={() => setEditingExpense(null)}
+      />
     </div>
   );
 }
