@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import clsx from 'clsx';
 import { Button } from '../ui/Button';
 import { ExpenseFormFields } from './ExpenseFormFields';
 import { ExpenseConfirmationCard } from './ExpenseConfirmationCard';
@@ -100,7 +101,10 @@ export function ManualExpenseSheet({ trip, open, onClose }) {
         onClick={onClose}
       >
         <div
-          className="flex max-h-[90vh] w-full flex-col overflow-hidden rounded-t-3xl bg-surface lg:h-auto lg:max-h-[640px] lg:w-[685px] lg:rounded-2xl lg:shadow-xl"
+          className={clsx(
+            'animate-slide-up-in flex max-h-[90vh] w-full flex-col overflow-hidden rounded-t-3xl bg-surface lg:h-auto lg:max-h-[640px] lg:rounded-2xl lg:shadow-xl',
+            !submitted && 'lg:w-[685px]',
+          )}
           onClick={(event) => event.stopPropagation()}
         >
           {submitted ? (

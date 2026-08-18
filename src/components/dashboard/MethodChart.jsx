@@ -1,4 +1,6 @@
+import clsx from 'clsx';
 import { formatCurrencyCOP } from '../../lib/format';
+import { useMountedAfterFrame } from '../../lib/useMountedAfterFrame';
 
 const SIZE = 201;
 const RADIUS = SIZE / 2;
@@ -17,6 +19,7 @@ function describeSlice(cx, cy, radius, startAngle, endAngle) {
 }
 
 export function MethodChart({ expenses }) {
+  const mounted = useMountedAfterFrame();
   const cardTotal = expenses
     .filter((expense) => expense.paymentMethodId === 'card')
     .reduce((sum, expense) => sum + expense.amount, 0);
@@ -33,7 +36,15 @@ export function MethodChart({ expenses }) {
 
   return (
     <div className="flex h-[240px] w-full flex-col items-center justify-center gap-[21px]">
-      <svg width={SIZE} height={SIZE} viewBox={`0 0 ${SIZE} ${SIZE}`}>
+      <svg
+        width={SIZE}
+        height={SIZE}
+        viewBox={`0 0 ${SIZE} ${SIZE}`}
+        className={clsx(
+          'transition-all duration-700 ease-out',
+          mounted ? 'scale-100 opacity-100' : 'scale-75 opacity-0',
+        )}
+      >
         {total > 0 ? (
           <>
             <path d={describeSlice(cx, cy, RADIUS, 0, cardAngle)} className="fill-brand" />

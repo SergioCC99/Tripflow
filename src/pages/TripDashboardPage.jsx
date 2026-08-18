@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useTrips } from '../features/trips/TripsProvider';
 import { useExpenses } from '../features/expenses/ExpensesProvider';
@@ -14,6 +14,7 @@ import { EditExpenseSheet } from '../components/dashboard/EditExpenseSheet';
 import { countTripDays, formatCurrencyCOP, formatShortDate } from '../lib/format';
 import dotIcon from '../assets/icons/dot.svg';
 import editIcon from '../assets/icons/edit.svg';
+import userPhoto from '../assets/images/User.png';
 
 function getElapsedAndRemainingDays(startDate, endDate) {
   const today = new Date();
@@ -28,12 +29,23 @@ function getElapsedAndRemainingDays(startDate, endDate) {
   return { elapsedDays, remainingDays };
 }
 
+const CLOSE_ANIMATION_MS = 260;
+
 export function TripDashboardPage() {
   const { tripId } = useParams();
   const navigate = useNavigate();
   const { trips } = useTrips();
   const { expensesByTrip, getTripSpent } = useExpenses();
   const [editingExpense, setEditingExpense] = useState(null);
+  const [isClosing, setIsClosing] = useState(false);
+
+  useEffect(() => {
+    if (!isClosing) return undefined;
+    const timer = setTimeout(() => navigate('/'), CLOSE_ANIMATION_MS);
+    return () => clearTimeout(timer);
+  }, [isClosing, navigate]);
+
+  const goBackToHub = () => setIsClosing(true);
 
   const trip = trips.find((candidate) => candidate.id === tripId);
 
@@ -56,10 +68,10 @@ export function TripDashboardPage() {
   const avgDailySpend = spentAmount / elapsedDays;
 
   return (
-    <div className="min-h-screen bg-surface pb-32 lg:pb-24">
+    <div className={`min-h-screen bg-surface pb-32 lg:pb-24 ${isClosing ? 'animate-slide-right-out' : 'animate-slide-right-in'}`}>
       <header className="relative flex items-center gap-4 border-b border-ink-secondary bg-surface-muted p-4 lg:px-6 lg:py-4">
         <div className="mx-auto flex w-full max-w-[1200px] items-center gap-4">
-          <ButtonBack label="Volver" showLabel={false} onClick={() => navigate('/')} />
+          <ButtonBack label="Volver" showLabel={false} onClick={goBackToHub} />
 
           <div className="flex flex-1 flex-col items-start gap-1">
             <h1 className="text-2xl font-bold text-ink">{trip.destination}</h1>
@@ -75,7 +87,7 @@ export function TripDashboardPage() {
             </div>
           </div>
 
-          <Avatar name="Paula" className="size-14" />
+          <Avatar name="Paula" photoUrl={userPhoto} className="size-14 shrink-0" />
         </div>
       </header>
 
@@ -87,10 +99,11 @@ export function TripDashboardPage() {
         <div className="flex w-full gap-4">
           <MetricCard
             label="Gasto / Día"
-            value={formatCurrencyCOP(avgDailySpend)}
+            value={avgDailySpend}
+            formatValue={formatCurrencyCOP}
             subLabel={`De ${formatCurrencyCOP(dailyBudget)}`}
             sheetTitle="Gasto por día"
-            sheetDescription="Es el promedio de lo que has gastado por cada día transcurrido del viaje. Lo comparamos con tu presupuesto diario planeado, que resulta de dividir el presupuesto total entre la duración total del viaje."
+            sheetDescription="El presupuesto diario resulta de dividir tu presupuesto total entre la duración total del viaje: no cambia según lo que gastes. El valor principal es el promedio real de lo que has gastado por cada día transcurrido de tu viaje."
           />
           <MetricCard
             label="Días restantes"

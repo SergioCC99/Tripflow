@@ -1,5 +1,6 @@
 import { formatCurrencyCOP } from '../../lib/format';
 import { getBudgetStatus } from '../../features/trips/budgetStatus';
+import { useCountUp } from '../../lib/useCountUp';
 import { ProgressBar } from '../ui/ProgressBar';
 import { BudgetExcess } from '../ui/BudgetExcess';
 
@@ -7,12 +8,13 @@ export function BudgetSummary({ trip, spentAmount }) {
   const available = trip.totalBudget - spentAmount;
   const isDanger = getBudgetStatus(spentAmount, trip.totalBudget) === 'danger';
   const excessAmount = Math.max(0, spentAmount - trip.totalBudget);
+  const animatedAvailable = useCountUp(available);
 
   return (
     <div className="flex w-full flex-col gap-3">
       <div className="flex w-full flex-col gap-1">
         <span className="text-sm text-muted lg:text-base">Disponible</span>
-        <span className="text-[32px] font-bold text-ink">{formatCurrencyCOP(available)}</span>
+        <span className="text-[32px] font-bold text-ink">{formatCurrencyCOP(animatedAvailable)}</span>
         <div className="flex w-full items-end justify-between">
           <span className="text-sm text-muted lg:text-base">De {formatCurrencyCOP(trip.totalBudget)} de presupuesto</span>
           {isDanger && <BudgetExcess amount={excessAmount} />}

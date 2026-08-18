@@ -2,6 +2,7 @@ import { useState } from 'react';
 import clsx from 'clsx';
 import { Button } from '../ui/Button';
 import { ManualExpenseSheet } from './ManualExpenseSheet';
+import { ExpenseConfirmationModal } from './ExpenseConfirmationModal';
 import { classifyExpenseText } from '../../features/expenses/classifyExpenseText';
 import { useSpeechToText } from '../../features/expenses/useSpeechToText';
 import { useExpenses } from '../../features/expenses/ExpensesProvider';
@@ -17,6 +18,7 @@ export function AddExpenseBar({ trip }) {
   const { addExpense } = useExpenses();
   const [text, setText] = useState('');
   const [manualOpen, setManualOpen] = useState(false);
+  const [confirmationOpen, setConfirmationOpen] = useState(false);
 
   const { isSupported: micSupported, isListening, start, stop } = useSpeechToText({
     lang: 'es-CO',
@@ -42,6 +44,7 @@ export function AddExpenseBar({ trip }) {
       createdAt: Date.now(),
     });
     setText('');
+    setConfirmationOpen(true);
   };
 
   const handleKeyDown = (event) => {
@@ -84,6 +87,7 @@ export function AddExpenseBar({ trip }) {
       </div>
 
       <ManualExpenseSheet trip={trip} open={manualOpen} onClose={() => setManualOpen(false)} />
+      <ExpenseConfirmationModal open={confirmationOpen} onClose={() => setConfirmationOpen(false)} />
     </>
   );
 }

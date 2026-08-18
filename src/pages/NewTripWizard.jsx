@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { flushSync } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
 import { ButtonBack } from '../components/ui/ButtonBack';
@@ -15,6 +16,7 @@ import checkIcon from '../assets/icons/check.svg';
 import dollarIcon from '../assets/icons/dollar.svg';
 
 const STEP_COUNT = 4;
+const CLOSE_ANIMATION_MS = 260;
 
 const INITIAL_FORM = {
   destination: '',
@@ -25,12 +27,22 @@ const INITIAL_FORM = {
   totalBudget: 0,
 };
 
+function animateStepChange(updateFn) {
+  if (typeof document.startViewTransition === 'function') {
+    document.startViewTransition(() => flushSync(updateFn));
+  } else {
+    updateFn();
+  }
+}
+
 export function NewTripWizard() {
   const navigate = useNavigate();
   const { addTrip } = useTrips();
   const [step, setStep] = useState(1);
   const [submitted, setSubmitted] = useState(false);
   const [form, setForm] = useState(INITIAL_FORM);
+  const [newTripId, setNewTripId] = useState(null);
+  const [isClosing, setIsClosing] = useState(false);
 
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
@@ -40,7 +52,14 @@ export function NewTripWizard() {
     };
   }, []);
 
-  const close = () => navigate('/');
+  useEffect(() => {
+    if (!isClosing) return undefined;
+    const timer = setTimeout(() => navigate('/'), CLOSE_ANIMATION_MS);
+    return () => clearTimeout(timer);
+  }, [isClosing, navigate]);
+
+  const close = () => setIsClosing(true);
+
   const update = (patch) => setForm((prev) => ({ ...prev, ...patch }));
 
   const hasValidDates = Boolean(form.startDate && form.endDate && form.startDate <= form.endDate);
@@ -54,16 +73,17 @@ export function NewTripWizard() {
     form.totalBudget > 0,
   ][step - 1];
 
-  const goBack = () => (step === 1 ? close() : setStep((current) => current - 1));
+  const goBack = () => (step === 1 ? close() : animateStepChange(() => setStep((current) => current - 1)));
 
   const goNext = () => {
     if (step < STEP_COUNT) {
-      setStep((current) => current + 1);
+      animateStepChange(() => setStep((current) => current + 1));
       return;
     }
 
+    const id = crypto.randomUUID();
     addTrip({
-      id: crypto.randomUUID(),
+      id,
       destination: form.destination.trim(),
       imageUrl: form.coverPhoto,
       startDate: form.startDate,
@@ -72,8 +92,11 @@ export function NewTripWizard() {
       totalBudget: form.totalBudget,
       status: deriveTripStatus(form.startDate, form.endDate),
     });
+    setNewTripId(id);
     setSubmitted(true);
   };
+
+  const goToNewTrip = () => navigate(`/viajes/${newTripId}`);
 
   return (
     <div className="fixed inset-0 z-50 lg:flex lg:items-center lg:justify-center lg:bg-ink/40 lg:p-6">
@@ -81,10 +104,14 @@ export function NewTripWizard() {
 
       {submitted ? (
         <div className="relative flex h-full w-full flex-col justify-end bg-ink/40 lg:h-auto lg:w-auto lg:justify-center lg:bg-transparent">
-          <ConfirmationCard onContinue={close} />
+          <ConfirmationCard onContinue={goToNewTrip} />
         </div>
       ) : (
-        <div className="relative flex size-full flex-col overflow-hidden bg-surface lg:h-auto lg:max-h-[640px] lg:w-full lg:max-w-[685px] lg:rounded-2xl lg:shadow-xl">
+        <div
+          className={`relative flex size-full flex-col overflow-hidden bg-surface lg:h-auto lg:max-h-[640px] lg:w-full lg:max-w-[685px] lg:rounded-2xl lg:shadow-xl ${
+            isClosing ? 'animate-slide-down-out' : 'animate-slide-up-in'
+          }`}
+        >
             <div className="flex flex-1 flex-col gap-6 overflow-y-auto p-4 lg:p-6">
               <ButtonBack onClick={goBack} />
 
@@ -200,7 +227,7 @@ function StepHeading({ title, description }) {
 
 function ConfirmationCard({ onContinue }) {
   return (
-    <div className="flex w-full flex-col items-center gap-16 rounded-t-3xl bg-surface px-8 py-16 lg:w-[480px] lg:rounded-2xl lg:py-8 lg:shadow-xl">
+    <div className="animate-slide-up-in flex w-full flex-col items-center gap-16 rounded-t-3xl bg-surface px-8 py-16 lg:w-[480px] lg:rounded-2xl lg:py-8 lg:shadow-xl">
       <div className="flex flex-col items-center gap-4">
         <div className="flex size-[100px] items-center justify-center rounded-full bg-brand">
           <img src={checkIcon} alt="" className="h-[27px] w-[38px]" />

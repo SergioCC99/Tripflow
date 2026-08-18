@@ -20,6 +20,7 @@ export function Stepper({ currentStep }) {
                 isCurrent && 'bg-ink text-inverse',
                 !isCompleted && !isCurrent && 'border border-ink text-ink',
               )}
+              style={isCurrent ? { viewTransitionName: 'stepper-active-indicator' } : undefined}
             >
               {isCompleted ? <img src={checkIcon} alt="" className="h-2 w-3" /> : step}
             </div>

@@ -37,3 +37,68 @@ body {
     width: 0%;
   }
 }
+
+@keyframes slide-up-in {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-down-out {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+.animate-slide-up-in {
+  animation: slide-up-in 300ms ease-out;
+}
+
+.animate-slide-down-out {
+  animation: slide-down-out 250ms ease-in forwards;
+}
+
+@keyframes slide-right-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slide-right-out {
+  from {
+    transform: translateX(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+.animate-slide-right-in {
+  animation: slide-right-in 300ms ease-out;
+}
+
+.animate-slide-right-out {
+  animation: slide-right-out 250ms ease-in forwards;
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation-duration: 220ms;
+}

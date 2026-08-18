@@ -1,5 +1,6 @@
 import clsx from 'clsx';
 import { formatCompactAmount, formatShortDate } from '../../lib/format';
+import { useMountedAfterFrame } from '../../lib/useMountedAfterFrame';
 
 const MIN_HEIGHT_PERCENT = 22;
 
@@ -21,6 +22,7 @@ function buildDayRange(startIso, endIso) {
 }
 
 export function DayChart({ trip, expenses }) {
+  const mounted = useMountedAfterFrame();
   const days = buildDayRange(trip.startDate, trip.endDate);
   const todayIso = toISODate(new Date());
   const dailyBudget = trip.totalBudget / days.length;
@@ -45,14 +47,17 @@ export function DayChart({ trip, expenses }) {
         />
 
         {dayTotals.map(({ day, amount, hasPassed }) => {
-          const heightPercent = hasPassed ? Math.max(MIN_HEIGHT_PERCENT, (amount / maxAmount) * 100) : MIN_HEIGHT_PERCENT;
+          const targetHeightPercent = hasPassed
+            ? Math.max(MIN_HEIGHT_PERCENT, (amount / maxAmount) * 100)
+            : MIN_HEIGHT_PERCENT;
+          const heightPercent = mounted ? targetHeightPercent : 0;
           const isOverBudget = hasPassed && amount > dailyBudget;
 
           return (
             <div key={day} className="flex h-full w-[43px] shrink-0 flex-col justify-end">
               <div
                 className={clsx(
-                  'flex w-full flex-col items-center justify-end gap-1 rounded-xl px-1 py-2',
+                  'flex w-full flex-col items-center justify-end gap-1 rounded-xl px-1 py-2 transition-[height] duration-700 ease-out',
                   hasPassed && (isOverBudget ? 'bg-warning' : 'bg-brand'),
                 )}
                 style={{ height: `${heightPercent}%` }}

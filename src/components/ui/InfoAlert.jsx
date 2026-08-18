@@ -15,7 +15,7 @@ const COUNTDOWN_BAR_CLASSES = {
 
 export function InfoAlert({ children, className, variant = 'ok', onDismiss, durationMs }) {
   return (
-    <div className={clsx('flex w-full flex-col overflow-hidden rounded-2xl border', VARIANT_CLASSES[variant], className)}>
+    <div className={clsx('flex w-full shrink-0 flex-col overflow-hidden rounded-2xl border', VARIANT_CLASSES[variant], className)}>
       <div className="flex w-full items-center gap-4 px-4 py-3">
         <img src={infoCircleIcon} alt="" className="size-6 shrink-0" />
         <p className="flex-1 text-sm text-ink">{children}</p>

@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { BottomSheet } from '../ui/BottomSheet';
+import { useCountUp } from '../../lib/useCountUp';
 import infoCircleIcon from '../../assets/icons/info-circle.svg';
 
-export function MetricCard({ label, value, subLabel, sheetTitle, sheetDescription }) {
+export function MetricCard({ label, value, formatValue = (v) => v, subLabel, sheetTitle, sheetDescription }) {
   const [open, setOpen] = useState(false);
+  const animatedValue = useCountUp(Math.round(value));
 
   return (
     <div className="flex h-[105px] flex-1 flex-col justify-center gap-1 rounded-2xl bg-surface-muted p-3">
@@ -18,7 +20,7 @@ export function MetricCard({ label, value, subLabel, sheetTitle, sheetDescriptio
           <img src={infoCircleIcon} alt="" className="size-[19px]" />
         </button>
       </div>
-      <span className="text-xl font-bold text-ink">{value}</span>
+      <span className="text-xl font-bold text-ink">{formatValue(animatedValue)}</span>
       <span className="text-sm text-muted">{subLabel}</span>
 
       <BottomSheet open={open} onClose={() => setOpen(false)} title={sheetTitle}>

@@ -1,6 +1,7 @@
 import { Avatar } from '../ui/Avatar';
 import logoArrow1 from '../../assets/icons/logo-arrow-1.svg';
 import logoArrow2 from '../../assets/icons/logo-arrow-2.svg';
+import userPhoto from '../../assets/images/User.png';
 
 export function AppHeader({ userName, actions }) {
   return (
@@ -14,15 +15,18 @@ export function AppHeader({ userName, actions }) {
       </div>
 
       <div className="relative mx-auto flex w-full max-w-[1200px] items-center gap-4 p-4 lg:px-6 lg:py-6">
-        <div className="flex flex-1 items-center gap-4">
-          <Avatar name={userName} className="size-14 lg:size-[59px]" />
-          <div className="flex flex-1 flex-col gap-1 text-ink">
-            <h1 className="text-2xl font-bold">¡Hola, {userName}!</h1>
-            <p className="text-sm lg:text-base">Bienvenida a Tripflow</p>
-          </div>
+        <div className="order-1 flex flex-1 flex-col gap-1 text-ink lg:order-2">
+          <h1 className="text-2xl font-bold">¡Hola, {userName}!</h1>
+          <p className="text-sm lg:text-base">Bienvenida a Tripflow</p>
         </div>
 
-        {actions && <div className="hidden shrink-0 lg:block">{actions}</div>}
+        <Avatar
+          name={userName}
+          photoUrl={userPhoto}
+          className="order-2 size-14 shrink-0 lg:order-1 lg:size-[59px]"
+        />
+
+        {actions && <div className="order-3 hidden shrink-0 lg:block">{actions}</div>}
       </div>
     </header>
   );
