@@ -29,8 +29,8 @@ export function TripHubPage() {
   const visibleTrips = useMemo(() => {
     const trips = tripsByStatus(activeTab);
     const query = search.trim().toLowerCase();
-    if (!query) return trips;
-    return trips.filter((trip) => trip.destination.toLowerCase().includes(query));
+    const filtered = query ? trips.filter((trip) => trip.destination.toLowerCase().includes(query)) : trips;
+    return [...filtered].sort((a, b) => a.startDate.localeCompare(b.startDate));
   }, [tripsByStatus, activeTab, search]);
 
   const goToNewTrip = () => navigate('/viajes/nuevo');

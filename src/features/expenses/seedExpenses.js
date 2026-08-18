@@ -138,27 +138,8 @@ export const seedExpenses = [
     date: '2026-08-17',
   },
 
-  // Resto de viajes semilla: un gasto único que conserva el total que ya mostraba el hub.
-  {
-    id: 'cartagena-1',
-    tripId: 'cartagena',
-    description: 'Gastos del viaje',
-    categoryId: 'general',
-    paymentMethodId: 'cash',
-    amount: 450_000,
-    currency: 'COP',
-    date: '2026-09-05',
-  },
-  {
-    id: 'lisboa-1',
-    tripId: 'lisboa',
-    description: 'Gastos del viaje',
-    categoryId: 'general',
-    paymentMethodId: 'cash',
-    amount: 1_200_000,
-    currency: 'COP',
-    date: '2026-10-02',
-  },
+  // Los viajes "Próximos" (Cartagena, Lisboa, Bogotá) no tienen gastos: aún no han ocurrido.
+  // Solo los viajes en curso o finalizados conservan un gasto que refleja el total del hub.
   {
     id: 'medellin-1',
     tripId: 'medellin',
