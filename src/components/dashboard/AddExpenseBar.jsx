@@ -6,13 +6,10 @@ import { ExpenseConfirmationModal } from './ExpenseConfirmationModal';
 import { classifyExpenseText } from '../../features/expenses/classifyExpenseText';
 import { useSpeechToText } from '../../features/expenses/useSpeechToText';
 import { useExpenses } from '../../features/expenses/ExpensesProvider';
+import { todayIso } from '../../lib/format';
 import sparklesIcon from '../../assets/icons/sparkles.svg';
 import micIcon from '../../assets/icons/mic.svg';
 import plusIcon from '../../assets/icons/plus.svg';
-
-function todayIso() {
-  return new Date().toISOString().slice(0, 10);
-}
 
 export function AddExpenseBar({ trip }) {
   const { addExpense } = useExpenses();

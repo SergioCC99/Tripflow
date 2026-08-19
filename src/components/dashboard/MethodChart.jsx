@@ -30,9 +30,13 @@ export function MethodChart({ expenses }) {
 
   const cx = RADIUS;
   const cy = RADIUS;
+  const isCardOnly = total > 0 && cashTotal === 0;
+  const isCashOnly = total > 0 && cardTotal === 0;
   const cardAngle = total > 0 ? (cardTotal / total) * 360 : 0;
-  const cardLabelPos = polarToCartesian(cx, cy, LABEL_RADIUS, cardAngle / 2);
-  const cashLabelPos = polarToCartesian(cx, cy, LABEL_RADIUS, cardAngle + (360 - cardAngle) / 2);
+  const cardLabelPos = isCardOnly ? { x: cx, y: cy } : polarToCartesian(cx, cy, LABEL_RADIUS, cardAngle / 2);
+  const cashLabelPos = isCashOnly
+    ? { x: cx, y: cy }
+    : polarToCartesian(cx, cy, LABEL_RADIUS, cardAngle + (360 - cardAngle) / 2);
 
   return (
     <div className="flex h-[240px] w-full flex-col items-center justify-center gap-[21px]">
@@ -47,8 +51,16 @@ export function MethodChart({ expenses }) {
       >
         {total > 0 ? (
           <>
-            <path d={describeSlice(cx, cy, RADIUS, 0, cardAngle)} className="fill-brand" />
-            <path d={describeSlice(cx, cy, RADIUS, cardAngle, 360)} className="fill-ink-secondary" />
+            {isCardOnly ? (
+              <circle cx={cx} cy={cy} r={RADIUS} className="fill-brand" />
+            ) : isCashOnly ? (
+              <circle cx={cx} cy={cy} r={RADIUS} className="fill-ink-secondary" />
+            ) : (
+              <>
+                <path d={describeSlice(cx, cy, RADIUS, 0, cardAngle)} className="fill-brand" />
+                <path d={describeSlice(cx, cy, RADIUS, cardAngle, 360)} className="fill-ink-secondary" />
+              </>
+            )}
             {cardTotal > 0 && (
               <text
                 x={cardLabelPos.x}

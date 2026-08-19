@@ -19,6 +19,17 @@ function parseIsoDate(isoDate) {
   return new Date(`${isoDate}T00:00:00`);
 }
 
+export function toISODate(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+export function todayIso() {
+  return toISODate(new Date());
+}
+
 export function formatCurrencyCOP(amount) {
   const rounded = Math.round(amount);
   const sign = rounded < 0 ? '-' : '';

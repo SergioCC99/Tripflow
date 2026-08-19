@@ -1,5 +1,7 @@
+import { todayIso } from '../../lib/format';
+
 export function deriveTripStatus(startDate, endDate) {
-  const today = new Date().toISOString().slice(0, 10);
+  const today = todayIso();
   if (today < startDate) return 'upcoming';
   if (today > endDate) return 'completed';
   return 'ongoing';

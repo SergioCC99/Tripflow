@@ -1,9 +1,5 @@
 import { ExpenseRow } from './ExpenseRow';
-import { formatCurrencyCOP, formatShortDate } from '../../lib/format';
-
-function toISODate(date) {
-  return date.toISOString().slice(0, 10);
-}
+import { formatCurrencyCOP, formatShortDate, toISODate } from '../../lib/format';
 
 function dayLabel(dateIso, todayIso, yesterdayIso) {
   if (dateIso === todayIso) return 'Hoy';

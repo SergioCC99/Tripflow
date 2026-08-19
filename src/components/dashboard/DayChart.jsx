@@ -1,12 +1,8 @@
 import clsx from 'clsx';
-import { formatCompactAmount, formatShortDate } from '../../lib/format';
+import { formatCompactAmount, formatShortDate, toISODate, todayIso as getTodayIso } from '../../lib/format';
 import { useMountedAfterFrame } from '../../lib/useMountedAfterFrame';
 
 const MIN_HEIGHT_PERCENT = 22;
-
-function toISODate(date) {
-  return date.toISOString().slice(0, 10);
-}
 
 function buildDayRange(startIso, endIso) {
   const days = [];
@@ -24,7 +20,7 @@ function buildDayRange(startIso, endIso) {
 export function DayChart({ trip, expenses }) {
   const mounted = useMountedAfterFrame();
   const days = buildDayRange(trip.startDate, trip.endDate);
-  const todayIso = toISODate(new Date());
+  const todayIso = getTodayIso();
   const dailyBudget = trip.totalBudget / days.length;
 
   const dayTotals = days.map((day) => {

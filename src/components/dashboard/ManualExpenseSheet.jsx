@@ -8,12 +8,8 @@ import { DEFAULT_CATEGORY_ID } from '../../features/expenses/categories';
 import { DEFAULT_PAYMENT_METHOD_ID } from '../../features/expenses/paymentMethods';
 import { useExpenses } from '../../features/expenses/ExpensesProvider';
 import { fetchExchangeRate } from '../../features/expenses/exchangeRate';
-import { formatThousands, parseThousands } from '../../lib/format';
+import { formatThousands, parseThousands, todayIso } from '../../lib/format';
 import checkIcon from '../../assets/icons/check.svg';
-
-function todayIso() {
-  return new Date().toISOString().slice(0, 10);
-}
 
 export function ManualExpenseSheet({ trip, open, onClose }) {
   const { addExpense } = useExpenses();

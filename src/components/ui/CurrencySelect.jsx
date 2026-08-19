@@ -68,7 +68,7 @@ export function CurrencySelect({ label = 'Moneda', value, onChange, className, v
         )}
       >
         {!isCompact && <img src={dollarIcon} alt="" className="h-[18px] w-auto shrink-0" />}
-        <span className={clsx('min-w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap', isCompact && 'text-center')}>
+        <span className={clsx('min-w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap text-left', isCompact && 'text-center')}>
           {isCompact ? selected.code : selected.label}
         </span>
         {!isCompact && (
