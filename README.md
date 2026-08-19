@@ -10,7 +10,7 @@ La aplicación fue diseñada e implementada como parte de una prueba técnica, p
 
 ## 🔗 Proyecto
 
-* **Aplicación desplegada:** [Ver Tripflow en Vercel](URL_VERCEL)
+* **Aplicación desplegada:** [Ver Tripflow en Vercel](https://tripflow-webapp.vercel.app/)
 * **Diseño en Figma:** [Ver diseño](https://www.figma.com/design/hdZ05KsFKIRiodUkWT0FvF/Tripflow?node-id=40-956&t=HFzrRVJ1643hf37Z-1)
 * **Proceso de investigación y diseño:** [Ver investigación en Figma](https://www.figma.com/board/4ZJg44GXl2ROg1XfS1qO52/Fast-Research---TripFlow?node-id=0-1&t=uKuHUxhD4sJn02cf-1)
 * **Repositorio:** [Ver código en GitHub](https://github.com/SergioCC99/Tripflow.git)
